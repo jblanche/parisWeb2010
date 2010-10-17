@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Websockets</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+
+
+	var conn, recvd, connections = 0;
+	var output_log = document.getElementById("log");
+	
+	var connect = function() {
+	  if (window["WebSocket"]) {
+	    recvd = 0;
+	    conn = new WebSocket("ws://"+document.location.host+"/");
+	    conn.onmessage = function(evt) {
+	      console.log(evt.data);
+	    };
+
+	    conn.onerror = function() {
+	      console.log("error", arguments);
+	    };
+
+	    conn.onclose = function(err) {
+				console.log("error", err);
+	    };
+
+	    conn.onopen = function() {
+	      console.log("opened");
+	    };
+	  }
+	};
+
+	$(function(){
+			connect();
+	});
+
+		
+	</script>
+	
+</head>
+
+<body>
+	<p id="log">
+		Hello Websockets
+	</p>
+	
+	<meter style="width:600px;height:60px" value="0" max="100"></meter>
+</body>
+</html>
+
