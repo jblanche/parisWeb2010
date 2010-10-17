@@ -1,97 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<title>Game</title>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="/js/socket.io.js"></script> 
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>Game</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/js/socket.io.js"></script> 
   <script type='text/javascript'>
     //<![CDATA[
       io.setPath('/');
     //]]>
-  </script>	
+  </script> 
 
-	<script> 
+  <script> 
 
-	socket = new io.Socket(location.host.split(':')[0]);
+  socket = new io.Socket(location.host.split(':')[0]);
 $(function() {
-	socket.connect();
-	
-	socket.on('connect', function(test) {
-		
-	});
-	
-	socket.on('message', function(msg) {
-		message = JSON.parse(msg);
-		
-		switch (message._type){
-			case "connect": 
-				addPlayer(message.client)
-				break;
+  socket.connect();
+  
+  socket.on('connect', function(test) {
+    
+  });
+  
+  socket.on('message', function(msg) {
+    message = JSON.parse(msg);
+    
+    switch (message._type){
+      case "connect": 
+        addPlayer(message.client)
+        break;
 
-			case "up": 
-				upPlayer(message.client, message.score)
-				break;
-			
-		  case "winner": 
-		 		winnerPlayer(message.client)
-				break;
+      case "up": 
+        upPlayer(message.client, message.score)
+        break;
+      
+      case "winner": 
+        winnerPlayer(message.client)
+        break;
 
-		 case "disconnect":
-				console.log('hello');
-				removePlayer(message.client)
-				break;
-		}
-	});
-	
-	
-	socket.on('disconnect', function(data) {
-	});
+     case "disconnect":
+        console.log('hello');
+        removePlayer(message.client)
+        break;
+    }
+  });
+  
+  
+  socket.on('disconnect', function(data) {
+  });
 
 
-	$('body').keyup(function(e){
-		console.log(e.keyCode);
-		if(e.keyCode == 87){ //w
-			socket.send('up');
-		}
-		if(e.keyCode == 78){ //n
-			socket.send('new');
-		}
-	});
-	
+  $('body').keyup(function(e){
+    console.log(e.keyCode);
+    if(e.keyCode == 87){ //w
+      socket.send('up');
+    }
+    if(e.keyCode == 78){ //n
+      socket.send('new');
+    }
+  });
+  
 });
 
 function addPlayer(player_id){
-	$('#game').append('<p data-player="'+player_id+'"><span>'+player_id+'</span><meter style="width:600px;height:60px" value="00" max="100"></meter><p>');
+  $('#game').append('<p data-player="'+player_id+'"><span>'+player_id+'</span><meter style="width:600px;height:60px" value="00" max="100"></meter><p>');
 }
 
 
 function removePlayer(player_id){
-	$('p[data-player='+player_id+']').remove();
+  $('p[data-player='+player_id+']').remove();
 }
 
 
 function upPlayer(player_id, score){
-	var meter = $('p[data-player='+player_id+']').find('meter') ; 
-	var value = meter.attr('value');
-	meter.attr('value', score);
+  var meter = $('p[data-player='+player_id+']').find('meter') ; 
+  var value = meter.attr('value');
+  meter.attr('value', score);
 }
 
 function winnerPlayer(player_id){
-	$('#log').html(player_id+" WON");
+  $('#log').html(player_id+" WON");
 }
 
-	</script>
+  </script>
 </head>
 
 <body>
-	<p id="log">
-		Crazy Game
-	</p>
-	
-	<div id="game">
-	</div>
-	
+  <p id="log">
+    Crazy Game
+  </p>
+  
+  <div id="game">
+  </div>
+  
 </body>
 </html>
 
